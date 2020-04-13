@@ -1,0 +1,9 @@
+---------------------------------------------------------------------------------------------------
+Version: 0.1.0
+Date: 13. 04. 2020
+  Features:
+    - Initial Version
+    - Movement speed increases as you walk longer, returns to normal as you stop walking.
+    - Several settings to customize the behavior and speeds.
+    - Setting to temporarily disable it globally (for servers).
+    - Hotkey, shortcut, and setting to disable it for individual players.

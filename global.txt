@@ -1,0 +1,18 @@
+Document describes the layout of the global table.
+
+version >= 0.1.0:
+
+global.version == 1
+global :: {
+    version :: int "Global table version, for easier migrations"
+    active_players[player_index :: int] :: "Active player is players that have adaptive movement speed enabled (in settings), and are online" {
+        player :: LuaPlayer "So that no new LuaPlayer instances have to be created"
+        progress :: double "movement speed progress, range [0, 1]"
+        last_position :: false | { x :: number, y :: number } "The last known position, used to determine if the player is moving, false if the current position is unknown"
+
+        base_speed :: double "cached and sanitized from settings"
+        maximum_speed :: double "cached and sanitized from settings"
+        speed_up_rate :: double "cached and transformed from settings"
+        cool_down_factor :: double "cached and transformed from settings"
+    }
+}

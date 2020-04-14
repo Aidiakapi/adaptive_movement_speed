@@ -37,7 +37,6 @@ reset_active_player = function (player)
         global.active_players[player.index] = {
             player = player,
             progress = 0,
-            last_position = false,
 
             base_speed = base_speed * 0.01,
             maximum_speed = maximum_speed * 0.01,
@@ -67,19 +66,10 @@ on_tick = function (_event)
             end
         end
 
-        local last_position = active_player.last_position
         local character = active_player.player.character
-        if character and not character.vehicle then
-            active_player.last_position = character.position
-        else
-            active_player.last_position = false
-        end
-        local current_position = active_player.last_position
-
         local is_moving = false
-        if last_position and current_position then
-            is_moving = last_position.x ~= current_position.x
-                or last_position.y ~= current_position.y
+        if character then
+            is_moving = character.walking_state.walking
         end
 
         if is_moving then
@@ -141,6 +131,10 @@ script.on_init(function ()
          -- Initialized by reset_all_active_players()
          active_players = false,
     }
+    reset_all_active_players()
+    register_on_tick_handler()
+end)
+script.on_configuration_changed(function ()
     reset_all_active_players()
     register_on_tick_handler()
 end)

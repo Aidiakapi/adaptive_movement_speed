@@ -67,30 +67,29 @@ on_tick = function (_event)
         end
 
         local character = active_player.player.character
-        local is_moving = false
         if character then
-            is_moving = character.walking_state.walking
-        end
-
-        if is_moving then
-            active_player.progress = math.min(
-                1,
-                active_player.progress + active_player.speed_up_rate
-            )
-        else
-            active_player.progress = math.max(
-                0,
-                active_player.progress * active_player.cool_down_factor
-            )
-            if active_player.progress < 0.001 then
-                active_player.progress = 0
+            if character.walking_state.walking then
+                active_player.progress = math.min(
+                    1,
+                    active_player.progress + active_player.speed_up_rate
+                )
+            else
+                active_player.progress = math.max(
+                    0,
+                    active_player.progress * active_player.cool_down_factor
+                )
+                if active_player.progress < 0.001 then
+                    active_player.progress = 0
+                end
             end
-        end
 
-        character.character_running_speed_modifier =
-            active_player.base_speed * (1 - active_player.progress) +
-            active_player.maximum_speed * active_player.progress -
-            1
+            character.character_running_speed_modifier =
+                active_player.base_speed * (1 - active_player.progress) +
+                active_player.maximum_speed * active_player.progress -
+                1
+        else
+            active_player.progress = 0
+        end
     end
 end
 

@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 0.2.0
+Date: 26. 09. 2020
+  Features:
+    - Add setting that disables the mod temporarily for a player when they take damage.
+  Changes:
+    - Significantly reduce the default settings, but feel free to turn it up again if you prefer.
+---------------------------------------------------------------------------------------------------
 Version: 0.1.1
 Date: 22. 04. 2020
   Bugfixes:

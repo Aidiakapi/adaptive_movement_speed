@@ -53,7 +53,9 @@ reset_active_player = function (player)
     update_shortcut_bar(player, player_settings)
 end
 
-on_tick = function (_event)
+on_tick = function (event)
+    local global_settings = settings.global
+    local disable_upon_taking_damage_ticks = math.floor(60 * global_settings['adaptive-movement-speed-global-disable-upon-taking-damage'].value + 0.5)
     for player_index, active_player in pairs(global.active_players) do
         if not active_player.player then
             local new_player = game.get_player(player_index)
@@ -68,7 +70,9 @@ on_tick = function (_event)
 
         local character = active_player.player.character
         if character then
-            if character.walking_state.walking then
+            if character.tick_of_last_damage + disable_upon_taking_damage_ticks >= event.tick then
+                active_player.progress = 0
+            elseif character.walking_state.walking then
                 active_player.progress = math.min(
                     1,
                     active_player.progress + active_player.speed_up_rate

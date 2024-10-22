@@ -9,7 +9,7 @@ local -- Forward declarations
 local is_tick_registered = false
 
 reset_all_active_players = function ()
-    global.active_players = {}
+    storage.active_players = {}
     for _, player in pairs(game.players) do
         reset_active_player(player)
     end
@@ -34,7 +34,7 @@ reset_active_player = function (player)
         local speed_up_rate = 1 / (player_settings['adaptive-movement-speed-speed-up-time'].value * 60)
         local cool_down_factor = math.pow(0.05, 1 / (player_settings['adaptive-movement-speed-cool-down-time'].value * 60))
 
-        global.active_players[player.index] = {
+        storage.active_players[player.index] = {
             player = player,
             progress = 0,
 
@@ -44,7 +44,7 @@ reset_active_player = function (player)
             cool_down_factor = cool_down_factor,
         }
     else
-        global.active_players[player.index] = nil
+        storage.active_players[player.index] = nil
         if player.character then
             player.character_running_speed_modifier = 0
         end
@@ -56,7 +56,7 @@ end
 on_tick = function (event)
     local global_settings = settings.global
     local disable_upon_taking_damage_ticks = math.floor(60 * global_settings['adaptive-movement-speed-global-disable-upon-taking-damage'].value + 0.5)
-    for player_index, active_player in pairs(global.active_players) do
+    for player_index, active_player in pairs(storage.active_players) do
         if not active_player.player then
             local new_player = game.get_player(player_index)
             if new_player then
@@ -98,7 +98,7 @@ on_tick = function (event)
 end
 
 register_on_tick_handler = function ()
-    if next(global.active_players) then
+    if next(storage.active_players) then
         if not is_tick_registered then
             is_tick_registered = true
             script.on_event(defines.events.on_tick, on_tick)
@@ -129,7 +129,7 @@ script.on_load(function ()
     register_on_tick_handler()
 end)
 script.on_init(function ()
-    global = {
+    storage = {
          version = 1,
          -- Initialized by reset_all_active_players()
          active_players = false,
@@ -177,8 +177,8 @@ script.on_event(defines.events.on_player_created, function (event)
 end)
 script.on_event(defines.events.on_player_removed, function (event)
     log('player removed')
-    if global.active_players[event.player_index] then
-        global.active_players[event.player_index] = nil
+    if storage.active_players[event.player_index] then
+        storage.active_players[event.player_index] = nil
         register_on_tick_handler()
     end
 end)

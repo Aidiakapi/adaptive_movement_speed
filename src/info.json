@@ -1,13 +1,13 @@
 {
     "name": "adaptive_movement_speed",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "title": "Adaptive Movement Speed",
     "author": "Aidiakapi",
     "contact": "aidiakapi@gmail.com",
     "homepage": "",
     "description": "Dynamically modifies your movement speed, so that you can walk long stretches more quickly, without sacrificing maneuverability in your factory. Fully customizable with settings!",
-    "factorio_version": "1.1",
+    "factorio_version": "2.0",
     "dependencies": [
-        "base >= 1.1.0"
+        "base >= 2.0.0"
     ]
 }
